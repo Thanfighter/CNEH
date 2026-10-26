@@ -1,6 +1,6 @@
 # WEEK 11: Nmap Lab Practicals
 
-**Target IP used in all commands:** `132.148.130.26`
+**Target IP used in all commands:** `scanme.nmap.org`
 
 Run these commands in the Kali Linux terminal only if you are authorized
 to scan this target.
@@ -10,25 +10,25 @@ to scan this target.
 ### 1. Detect the operating system
 
 ``` bash
-nmap -O 132.148.130.26
+nmap -O scanme.nmap.org
 ```
 
 ### 2. Detect services and versions
 
 ``` bash
-nmap -sV 132.148.130.26
+nmap -sV 1scanme.nmap.org
 ```
 
 ### 3. Detect services, versions, and operating system
 
 ``` bash
-nmap -sV -O 132.148.130.26
+nmap -sV -O scanme.nmap.org
 ```
 
 ### 4. Scan specific ports
 
 ``` bash
-nmap -p 21,22,80,443 132.148.130.26
+nmap -p 21,22,80,443 scanme.nmap.org
 ```
 
 ## B) Scanning Using Nmap Scripts
@@ -36,25 +36,25 @@ nmap -p 21,22,80,443 132.148.130.26
 ### 5. Run default Nmap scripts
 
 ``` bash
-nmap -sC 132.148.130.26
+nmap -sC scanme.nmap.org
 ```
 
 ### 6. Run default scripts and detect service versions
 
 ``` bash
-nmap -sC -sV 132.148.130.26
+nmap -sC -sV scanme.nmap.org
 ```
 
 ### 7. Run vulnerability-checking scripts
 
 ``` bash
-nmap --script vuln 132.148.130.26
+nmap --script vuln scanme.nmap.org
 ```
 
 ### 8. Run the HTTP title script on ports 80 and 443
 
 ``` bash
-nmap --script http-title -p 80,443 132.148.130.26
+nmap --script http-title -p 80,443 scanme.nmap.org
 ```
 
 ### 9. List available Nmap scripts
@@ -92,8 +92,8 @@ nmap -h
 ## Four Main Commands to Memorize
 
 ``` bash
-nmap -O 132.148.130.26
-nmap -sV 132.148.130.26
-nmap -sC 132.148.130.26
-nmap --script vuln 132.148.130.26
+nmap -O scanme.nmap.org
+nmap -sV scanme.nmap.org
+nmap -sC scanme.nmap.org
+nmap --script vuln scanme.nmap.org
 ```

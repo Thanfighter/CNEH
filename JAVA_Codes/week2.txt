@@ -1,0 +1,90 @@
+import java.util.Scanner;
+
+public class Main {
+
+    // Convert characters into 8-bit binary
+    static String toBinary(String data) {
+        StringBuilder binary = new StringBuilder();
+
+        for (char ch : data.toCharArray()) {
+            String bits = Integer.toBinaryString(ch);
+
+            while (bits.length() < 8) {
+                bits = "0" + bits;
+            }
+
+            binary.append(bits);
+        }
+
+        return binary.toString();
+    }
+
+    // Modulo-2 division using XOR
+    static String divide(String data, String divisor) {
+
+        char[] bits = data.toCharArray();
+        int n = divisor.length();
+
+        for (int i = 0; i <= bits.length - n; i++) {
+
+            if (bits[i] == '1') {
+
+                for (int j = 0; j < n; j++) {
+
+                    if (bits[i + j] == divisor.charAt(j)) {
+                        bits[i + j] = '0';
+                    } else {
+                        bits[i + j] = '1';
+                    }
+                }
+            }
+        }
+
+        return new String(bits, bits.length - n + 1, n - 1);
+    }
+
+    // Calculate CRC and verify
+    static void calculateCRC(String data, String polynomial) {
+
+        String binary = toBinary(data);
+
+        // Append zeros
+        String appended = binary + "0".repeat(polynomial.length() - 1);
+
+        // Calculate remainder
+        String remainder = divide(appended, polynomial);
+
+        // Generate transmitted frame
+        String transmitted = binary + remainder;
+
+        System.out.println("\nPolynomial: " + polynomial);
+        System.out.println("Original Data: " + binary);
+        System.out.println("CRC Remainder: " + remainder);
+        System.out.println("Transmitted Data: " + transmitted);
+
+        // Receiver verification
+        String check = divide(transmitted, polynomial);
+
+        System.out.println("Receiver Remainder: " + check);
+
+        if (check.chars().allMatch(ch -> ch == '0')) {
+            System.out.println("No error detected");
+        } else {
+            System.out.println("Error detected");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter character data: ");
+        String data = sc.nextLine();
+
+        calculateCRC(data, "1100000001111");     // CRC-12
+
+        calculateCRC(data, "11000000000000101"); // CRC-16
+
+        calculateCRC(data, "10001000000100001"); // CRC-CCITT
+    }
+}

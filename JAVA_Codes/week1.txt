@@ -1,0 +1,178 @@
+1A. Character Stuffing – Java
+This version uses FLAG and ESC as complete special-character tokens.
+
+Input: A B ESC ESC ESC
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter data: ");
+        String data = sc.nextLine();
+
+        String[] arr = data.trim().split("\\s+");
+
+        StringBuilder result = new StringBuilder("FLAG ");
+
+        for (String ch : arr) {
+            if (ch.equals("FLAG") || ch.equals("ESC")) {
+                result.append("ESC ");
+            }
+            result.append(ch).append(" ");
+        }
+
+        result.append("FLAG");
+
+        System.out.println("Stuffed data: " + result);
+    }
+}
+
+
+
+Output:
+Enter data: A B ESC ESC ESC
+
+Stuffed data:
+FLAG A B ESC ESC ESC ESC ESC ESC FLAG
+
+
+1B. Character Destuffing – Java
+Logic: Whenever ESC is encountered, skip it and take the next character as original data.
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter stuffed data: ");
+        String data = sc.nextLine();
+
+        String[] arr = data.trim().split("\\s+");
+
+        StringBuilder result = new StringBuilder();
+
+        // Ignore starting and ending FLAG
+        for (int i = 1; i < arr.length - 1; i++) {
+
+            if (arr[i].equals("ESC")) {
+                i++;
+            }
+
+            result.append(arr[i]).append(" ");
+        }
+
+        System.out.println("Destuffed data: " + result);
+    }
+}
+
+
+
+Input:
+FLAG A B ESC ESC ESC ESC ESC ESC FLAG
+
+
+Output:
+Destuffed data: A B ESC ESC ESC
+
+
+
+2A. Bit Stuffing – Java
+Logic: Whenever five consecutive 1s occur, insert an extra 0.
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter binary data: ");
+        String data = sc.nextLine();
+
+        StringBuilder result = new StringBuilder("01111110");
+
+        int count = 0;
+
+        for (int i = 0; i < data.length(); i++) {
+            char bit = data.charAt(i);
+
+            result.append(bit);
+
+            if (bit == '1') {
+                count++;
+
+                if (count == 5) {
+                    result.append('0');
+                    count = 0;
+                }
+            } else {
+                count = 0;
+            }
+        }
+
+        result.append("01111110");
+
+        System.out.println("Stuffed data: " + result);
+    }
+}
+
+
+
+Input:
+01111110
+
+
+Output:
+Stuffed data: 01111101001111110
+
+
+2B. Bit Destuffing – Java
+Logic: Whenever five consecutive 1s are encountered, remove the next 0.
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter stuffed data: ");
+        String data = sc.nextLine();
+
+        // Remove starting and ending flags
+        String bits = data.substring(8, data.length() - 8);
+
+        StringBuilder result = new StringBuilder();
+
+        int count = 0;
+
+        for (int i = 0; i < bits.length(); i++) {
+            char bit = bits.charAt(i);
+
+            result.append(bit);
+
+            if (bit == '1') {
+                count++;
+
+                if (count == 5) {
+                    i++; // Skip the stuffed 0
+                    count = 0;
+                }
+            } else {
+                count = 0;
+            }
+        }
+
+        System.out.println("Destuffed data: " + result);
+    }
+}
+
+
+
+Input:
+01111101001111110
+
+
+Output:
+Destuffed data: 01111110
