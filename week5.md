@@ -151,14 +151,6 @@ Example address from the lab handout:
 10.100.2.57
 ```
 
-The corresponding FTP address is:
-
-``` text
-ftp://10.100.2.57
-```
-
-> Replace `10.100.2.57` with the actual IPv4 address of your FTP server.
-
 ## Step 9: Connect to the FTP Server
 
 Open Command Prompt on the client computer and run:
