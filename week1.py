@@ -1,7 +1,5 @@
-# Character Count, Character Stuffing and Bit Stuffing
-
 def character_count(data):
-    return str(len(data)) + data
+    return str(len(data) + 1) + data
 
 
 def character_stuffing(data):
@@ -36,12 +34,10 @@ print("Character Stuffing:", character_stuffing(data))
 print("Bit Stuffing:", bit_stuffing(bits))
 
 
-'''
 SAMPLE INPUT:
-Enter character data: HELLO
-Enter binary data: 111111
+Enter character data: AFLAGB
+Enter binary data: 0111110111111
 SAMPLE OUTPUT:
-Character Count: 5HELLO
-Character Stuffing: FLAG HELLO FLAG
-Bit Stuffing: 011111100111110101111110
-'''
+Character Count: 7AFLAGB
+Character Stuffing: FLAG AESCFLAGB FLAG
+Bit Stuffing: 0111111001111100111110101111110
