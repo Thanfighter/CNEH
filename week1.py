@@ -33,7 +33,7 @@ print("Character Count:", character_count(data))
 print("Character Stuffing:", character_stuffing(data))
 print("Bit Stuffing:", bit_stuffing(bits))
 
-
+'''
 SAMPLE INPUT:
 Enter character data: AFLAGB
 Enter binary data: 0111110111111
@@ -41,3 +41,4 @@ SAMPLE OUTPUT:
 Character Count: 7AFLAGB
 Character Stuffing: FLAG AESCFLAGB FLAG
 Bit Stuffing: 0111111001111100111110101111110
+'''
