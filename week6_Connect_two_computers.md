@@ -1,183 +1,156 @@
 # WEEK 6: Establishing a Network Between Computers
 
-**Experiment:** Establishing a direct network connection between two computers using an Ethernet cable.
+**Practical Experiment**
 
 ## 1. Aim
 
-To establish a network connection between two computers using an Ethernet cable, configure static IP addresses, and verify communication using the `ping` command.
+To establish a network connection between two computers using a direct Ethernet cable, configure static IP addresses, and verify communication using the `ping` command.
 
 ## 2. Requirements
 
 1. Two computers (PC1 and PC2).
-2. An Ethernet cable (RJ45).
-3. Windows operating system on both computers.
-4. Ethernet network interface cards (NICs) on both computers.
+2. Ethernet cable (RJ45).
+3. Windows operating system.
+4. Network Interface Cards (NICs).
 
-## 3. Network Topology
+## 3. Procedure
 
-The two computers are connected directly using an Ethernet cable.
+### Step 1: Connect Both Computers
 
-```text
-+----------------------+         Ethernet cable         +----------------------+
-|         PC1          |---------------------------------|         PC2          |
-| IP: 192.168.20.1     |                                 | IP: 192.168.20.2     |
-| Mask: 255.255.255.0  |                                 | Mask: 255.255.255.0  |
-+----------------------+                                 +----------------------+
-```
+1. Connect PC1 and PC2 using a direct Ethernet cable.
+2. Disconnect Wi-Fi on both computers to avoid network interference.
+3. Open Command Prompt on both computers.
 
-Both computers belong to the same IPv4 subnet (`192.168.20.0/24`).
+### Step 2: Assign Static IP Addresses
 
-## 4. Procedure
+Configure the following IP addresses on the respective computers.
 
-### Step 1: Connect the computers
+**PC1 Configuration**
 
-1. Connect PC1 and PC2 using the Ethernet cable.
-2. Check that the Ethernet connection is detected on both computers. The Ethernet adapter should show a connected status.
-3. Open **Command Prompt** on both computers.
+- IP Address: `192.168.20.1`
+- Subnet Mask: `255.255.255.0`
+- Default Gateway: Leave blank
+- DNS Server: Leave blank
 
-### Step 2: Check the current network configuration
+**PC2 Configuration**
 
-Run the following command on both computers:
+- IP Address: `192.168.20.2`
+- Subnet Mask: `255.255.255.0`
+- Default Gateway: Leave blank
+- DNS Server: Leave blank
 
-```cmd
-ipconfig
-```
+**Configuration Steps:**
 
-This command displays the IP address, subnet mask, and default gateway for the network adapters.
+1. Open Settings → Network & Internet → Ethernet.
+2. Under IP Assignment, click **Edit**.
+3. Select **Manual**.
+4. Enable **IPv4**.
+5. Enter the respective IP address and subnet mask.
+6. Leave Default Gateway and DNS fields blank.
+7. Click **Save**.
 
-For this experiment, static IPv4 addresses will be assigned manually to the Ethernet adapters.
+### Step 3: Verify IP Configuration
 
-### Step 3: Assign static IP addresses
-
-Use the following configuration:
-
-| Configuration | PC1 | PC2 |
-|---|---|---|
-| IPv4 address | `192.168.20.1` | `192.168.20.2` |
-| Subnet mask | `255.255.255.0` | `255.255.255.0` |
-| Default gateway | Leave blank | Leave blank |
-| Preferred DNS server | Leave blank | Leave blank |
-
-**Steps to configure the IP address:**
-
-1. Open **Control Panel**.
-2. Select **Network and Internet**.
-3. Open **Network and Sharing Center**.
-4. Click **Change adapter settings**.
-5. Right-click the **Ethernet** adapter and select **Properties**.
-6. Select **Internet Protocol Version 4 (TCP/IPv4)** and click **Properties**.
-7. Select **Use the following IP address**.
-8. Enter the IP address and subnet mask specified for that computer in the table above.
-9. Leave the default gateway and DNS fields blank.
-10. Click **OK**, then **Close**.
-
-Repeat these steps on the other computer, using its assigned IP address.
-
-> **Important:** Configure the physical Ethernet adapter used for the cable connection. Do not change the settings for Wi-Fi, VPN, VirtualBox, or other virtual network adapters.
-
-### Step 4: Verify the IP configuration
-
-On PC1, run:
+Open Command Prompt on both computers and execute:
 
 ```cmd
 ipconfig
 ```
 
-Expected Ethernet adapter details:
+**Expected Output on PC1:**
 
 ```text
-IPv4 Address . . . . . . . . . . : 192.168.20.1
-Subnet Mask  . . . . . . . . . . : 255.255.255.0
+IPv4 Address: 192.168.20.1
+Subnet Mask: 255.255.255.0
 ```
 
-On PC2, run:
+**Expected Output on PC2:**
+
+```text
+IPv4 Address: 192.168.20.2
+Subnet Mask: 255.255.255.0
+```
+
+### Step 4: Configure Windows Firewall
+
+On both computers, open Command Prompt as Administrator and execute:
 
 ```cmd
-ipconfig
+netsh advfirewall firewall add rule name="Lab ICMPv4 Echo" protocol=icmpv4:8,any dir=in action=allow
 ```
 
-Expected Ethernet adapter details:
+**Expected Output:**
 
 ```text
-IPv4 Address . . . . . . . . . . : 192.168.20.2
-Subnet Mask  . . . . . . . . . . : 255.255.255.0
+Ok.
 ```
 
-### Step 5: Test connectivity using PING
+This command allows incoming ICMPv4 Echo Requests, which are required for successful ping communication.
 
-The `ping` command tests whether one computer can communicate with another over an IP network. It sends ICMP Echo Request packets and waits for replies.
+### Step 5: Test Network Connectivity
 
-**From PC1, ping PC2:**
+**From PC1, execute:**
 
 ```cmd
 ping 192.168.20.2
 ```
 
-Sample successful output:
-
-```text
-Pinging 192.168.20.2 with 32 bytes of data:
-Reply from 192.168.20.2: bytes=32 time=1ms TTL=128
-Reply from 192.168.20.2: bytes=32 time=1ms TTL=128
-Reply from 192.168.20.2: bytes=32 time=1ms TTL=128
-Reply from 192.168.20.2: bytes=32 time=1ms TTL=128
-
-Ping statistics for 192.168.20.2:
-    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
-```
-
-**From PC2, ping PC1:**
+**From PC2, execute:**
 
 ```cmd
 ping 192.168.20.1
 ```
 
-A successful test should report four packets sent, four received, and zero lost (0% packet loss).
+**Expected Result:**
 
-If both tests succeed, the computers can communicate with each other over the Ethernet connection.
-
-### Step 6: Check the ARP table
-
-Run the following command on both computers:
-
-```cmd
-arp -a
+```text
+Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)
 ```
 
-The Address Resolution Protocol (ARP) table displays IP-to-MAC address mappings learned by the computer. After a successful ping, PC1 should normally show an entry for `192.168.20.2`, and PC2 should normally show an entry for `192.168.20.1`.
+Successful replies indicate that both computers can communicate over the Ethernet connection.
 
-### Step 7: Check the MAC address
+## 4. Additional Networking Commands
 
-Run:
-
-```cmd
-getmac
-```
-
-This command displays the MAC addresses of the network adapters. Identify the entry corresponding to the Ethernet adapter used in the experiment.
-
-## 5. Commands Used in the Experiment
+Execute the following commands on both computers.
 
 | Command | Purpose |
 |---|---|
-| `ipconfig` | Displays IP configuration. |
-| `ipconfig /all` | Displays detailed network configuration, including physical addresses and adapter details. |
-| `ping IP-address` | Tests network connectivity with the specified IP address. |
-| `arp -a` | Displays the ARP table containing IP-to-MAC address mappings. |
-| `getmac` | Displays the MAC addresses of network adapters. |
-| `hostname` | Displays the computer's host name. |
-| `tracert IP-address` | Traces the route taken by packets to the destination. For two computers on the same local subnet, intermediate routers are generally not involved. |
+| `ipconfig` | Displays IP address configuration. |
+| `ipconfig /all` | Displays detailed network configuration. |
+| `ping <IP>` | Tests network connectivity. |
+| `arp -a` | Displays IP-to-MAC address mappings. |
+| `hostname` | Displays the computer name. |
+| `getmac` | Displays the MAC address. |
+| `tracert <IP>` | Traces the network route to a destination. |
+| `netstat -an` | Displays network connections and listening ports. |
 
-## 6. Troubleshooting
+## 5. Screenshots for Lab Record
 
-If the ping test fails, check the following:
+Capture the following four screenshots as proof of successful execution:
 
-1. Confirm that the Ethernet cable is properly connected and that both Ethernet adapters show a connected status.
-2. Verify that PC1 and PC2 have the correct IP addresses and the same subnet mask.
-3. Make sure the IP addresses are configured on the physical Ethernet adapters, not on Wi-Fi or virtual adapters.
-4. Check whether Windows Firewall is blocking ICMP Echo Requests. The relevant inbound rule may need to be enabled for the active network profile, subject to the computer's security policy.
-5. Run `ipconfig` again to confirm that the settings have been applied correctly.
+1. PC1 IP configuration using `ipconfig`.
+2. PC2 IP configuration using `ipconfig`.
+3. Successful ping from PC1 to PC2.
+4. Successful ping from PC2 to PC1.
+
+## 6. Important Note: Previous Wi-Fi Experiment
+
+In the earlier Wi-Fi experiment, the following IP addresses were used:
+
+| Device | IP Address |
+|---|---|
+| PC1 | `192.168.0.102` |
+| PC2 | `192.168.0.103` |
+| Router | `192.168.0.1` |
+
+Both computers could successfully ping the router but could not communicate directly with each other.
+
+This issue may have been caused by **Wireless Client Isolation (AP Isolation)** configured on the router.
+
+The Wi-Fi experiment and the direct Ethernet experiment are separate tests. Do not mix their IP addresses or configurations.
 
 ## 7. Result
 
-A direct network connection was established between two computers using an Ethernet cable. Static IP addresses `192.168.20.1` and `192.168.20.2` were assigned with the subnet mask `255.255.255.0`. Communication between the computers was verified using the `ping` command. Successful communication is indicated by four packets received and 0% packet loss in both directions.
+A direct Ethernet network was established between two computers by assigning static IP addresses. Network connectivity was successfully verified using the `ping` command.
+
+**Troubleshooting note:** The firewall command should be executed on both PCs, and the Ethernet adapter must show a connected link. If ping fails, check the Ethernet connection, IP configuration, and firewall rule before concluding that the experiment failed.
